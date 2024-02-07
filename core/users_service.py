@@ -1,7 +1,7 @@
 from flask import jsonify
 
-# {'id': int, 'name': str, 'email': str, 'sessions': [session_user]}
-users = [{'id': 0, 'name': 'Amir Dayagi', 'email': 'amir.dayagi@gmail.com', 'sessions': []}]
+# {'id': int, 'name': str, 'email': str, }
+users = [{'id': 0, 'name': 'Amir Dayagi', 'email': 'amir.dayagi@gmail.com'}]
 
 next_user_id = 1
 

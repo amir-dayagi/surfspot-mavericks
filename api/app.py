@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_json_schema import JsonSchema, JsonValidationError
-import users
-import sessions
+import users_services
+import sessions_services
 
 app = Flask(__name__)
 schema = JsonSchema(app)
@@ -65,11 +65,14 @@ def create_user():
     user = users.create_user(request.get_json())
     return 201, user
 
-
 @app.route('/users/<int:id>', methods=['DELETE'])
 def delete_user(id: int):
     user = user.delete_user(id)
     return 200, user 
+
+@app.route('/users/<int:id>/sessions', methods=['GET'])
+def get_sessions_by_user(id: int):
+    return 200, user.get_sessions(id)
 
 
 @app.route('/sessions', methods=['GET'])

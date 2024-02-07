@@ -1,2 +1,0 @@
-# {'id': int, 'name': str, 'creation_datetime': date_time, 'start_datetime': datetime, 'end_datetime': datetime, 'area_loc': location, 'participants': [session_user]}
-sessions = [{'id': 0, 'name': 'Blackies', 'creation_datetime': 0, 'start_datetime': 0, 'end_datetime': 0, 'area_loc': 0, 'participants': []}]
