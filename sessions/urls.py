@@ -1,48 +1,66 @@
-# @app.route('/users/<int:id>/sessions', methods=['GET'])
-# def get_sessions_by_user(id: int):
-#     return 200, user.get_sessions(id)
+from flask import request
+
+from ..app import app
+from . import controllers
+
+@app.route('/sessions', methods=['GET'])
+def get_sessions():
+    return controllers.get_sessions()
 
 
-# @app.route('/sessions', methods=['GET'])
-# def get_sessions():
-#     return 200, sessions.get_sessions()
+@app.route('/sessions/<int:id>', methods=['GET'])
+def get_session(id: int):
+    return controllers.get_session(id)
 
-# @app.route('/sessions/<int:id>', methods=['GET'])
-# def get_session(id: int):
-#     return 200, sessions.get_session(id)
 
-# @app.route('/sessions', methods=['POST'])
+@app.route('/sessions', methods=['POST'])
 # @schema.validate(session_schema)
-# def create_session():
-#     session = sessions.create_session(request.get_json())
-#     return 201, session
+def create_session():
+    session = controllers.create_session()
+    return session, 201
 
-# @app.route('/sessions/<int:id>', methods=['DELETE'])
-# def delete_session(id: int):
-#     session = sessions.delete_session(id)
-#     return 200, session
 
-# @app.route('/sessions/<int:session_id>/add-user/<int:user_id>', methods=['PATCH'])
-# def session_add_user(session_id: int, user_id: int):
-#     sessions.add_user(session_id, user_id)
-#     return 204
+@app.route('/sessions/<int:id>', methods=['DELETE'])
+def delete_session(id: int):
+    session = controllers.delete_session(id)
+    return session
 
-# @app.route('/sessions/<int:session_id>/remove-user/<int:user_id>', methods=['PATCH'])
-# def session_remove_user(session_id: int, user_id: int):
-#     sessions.remove_user(session_id, user_id)
-#     return 204
 
-# @app.route('/sessions/<int:session_id>/user-park-loc/<int:user_id>', methods=['PATCH'])
+@app.route('/sessions/<int:session_id>/add-user/<int:user_id>', methods=['PATCH'])
+def session_add_user(session_id: int, user_id: int):
+    controllers.session_add_user(session_id, user_id)
+    return {'status': 204}
+
+
+@app.route('/sessions/<int:session_id>/remove-user/<int:user_id>', methods=['PATCH'])
+def session_remove_user(session_id: int, user_id: int):
+    controllers.session_remove_user(session_id, user_id)
+    return {'status': 204}
+
+
+@app.route('/sessions/<int:session_id>/users', methods=['GET'])
+def session_get_users(session_id: int):
+    return controllers.session_get_users(session_id)
+
+
+# @app.route('/sessions/<int:session_id>/users/<int:user_id>', methods=['GET'])    
+# def session_get_user(session_id: int, user_id: int):
+#     return controllers.session_get_user(session_id, user_id)
+
+
+@app.route('/sessions/<int:session_id>/user-park-loc/<int:user_id>', methods=['PATCH'])
 # @schema.validate(location_schema)
-# def session_set_parking_loc(session_id: int, user_id: int):
-#     sessions.set_parking_loc(session_id, user_id, request.get_json())
-#     return 204
+def session_set_parking_loc(session_id: int, user_id: int):
+    controllers.session_set_parking_loc(session_id, user_id)
+    return {'status': 204}
 
-# @app.route('/sessions/<int:session_id>/user-surf-loc/<int:user_id>', methods=['PATCH'])
+
+@app.route('/sessions/<int:session_id>/user-surf-loc/<int:user_id>', methods=['PATCH'])
 # @schema.validate(location_schema)
-# def session_set_surf_loc(session_id: int, user_id: int):
-#     sessions.set_surf_loc(session_id, user_id, request.get_json())
-#     return 204
+def session_set_surfing_loc(session_id: int, user_id: int):
+    controllers.session_set_surfing_loc(session_id, user_id)
+    return {'status': 204}
+
 
 # session_schema = {
 #     'type': 'object',

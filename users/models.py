@@ -2,32 +2,20 @@ from .. import db
 
 from typing import List
 
-from sqlalchemy import inspect, Integer, PrimaryKeyConstraint, Text, UniqueConstraint
-from sqlalchemy.orm import validates, Mapped, mapped_column, relationship
-from sqlalchemy.orm.base import Mapped
+from sqlalchemy import inspect, Integer, Text
+from sqlalchemy.dialects.postgresql import CITEXT
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 class User(db.Model):
     __tablename__ = 'users'
-    __table_args__ = (
-        PrimaryKeyConstraint('id', name='users_pkey'),
-        UniqueConstraint('email', name='users_unique_email')
-    )
 
-    # auto generated fields
-    id = mapped_column(Integer)
+    id = mapped_column(Integer, nullable=False, primary_key=True, server_default="nextval('users_id_seq'::regclass)")
 
-    # input by user fields
-    name = mapped_column(Text, nullable=False)
-    email = mapped_column(Text)
+    email = mapped_column(CITEXT, unique=True, nullable=False)
+    first_name = mapped_column(Text, nullable=False)
+    last_name = mapped_column(Text, nullable=True)
 
-    # session_users: Mapped[List['SessionUsers']] = relationship('SessionUsers', uselist=True, back_populates='user')
-
-    @validates('email')
-    def empty_string_to_null(self, key, value):
-        if isinstance(value, str) and not value:
-            return None
-        return value
-
+    session_users: Mapped[List['SessionUser']] = relationship(back_populates='user')
 
     def to_dict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
