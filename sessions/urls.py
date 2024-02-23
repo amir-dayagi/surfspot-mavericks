@@ -43,9 +43,9 @@ def session_get_users(session_id: int):
     return controllers.session_get_users(session_id)
 
 
-# @app.route('/sessions/<int:session_id>/users/<int:user_id>', methods=['GET'])    
-# def session_get_user(session_id: int, user_id: int):
-#     return controllers.session_get_user(session_id, user_id)
+@app.route('/sessions/<int:session_id>/users/<int:user_id>', methods=['GET'])    
+def session_get_user(session_id: int, user_id: int):
+    return controllers.session_get_user(session_id, user_id)
 
 
 @app.route('/sessions/<int:session_id>/user-park-loc/<int:user_id>', methods=['PATCH'])

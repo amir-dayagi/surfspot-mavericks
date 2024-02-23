@@ -31,9 +31,9 @@ def user_get_sessions(user_id: int):
     return controllers.user_get_sessions(user_id)
 
 
-# @app.route('/users/<int:user_id>/sessions/<int:session_id>', methods=['GET'])
-# def user_get_session(user_id: int, session_id: int):
-#     return controllers.user_get_session(user_id, session_id)
+@app.route('/users/<int:user_id>/sessions/<int:session_id>', methods=['GET'])
+def user_get_session(user_id: int, session_id: int):
+    return controllers.user_get_session(user_id, session_id)
 
 
 

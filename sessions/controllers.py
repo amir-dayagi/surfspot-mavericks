@@ -74,11 +74,11 @@ def session_get_users(session_id: int):
     return jsonify(response)
 
 
-# def session_get_user(session_id: int, user_id: int):
-#     user = db.session().scalar(db.select(User)
-#                                   .where(User.session_users.any(SessionUser.session_id == session_id and SessionUser.user_id == user_id))
-#                                )
-#     return jsonify(user.to_dict())
+def session_get_user(session_id: int, user_id: int):
+    session_user = db.session().scalar(db.select(SessionUser)
+                                    .where(SessionUser.session_id == session_id)
+                                    .where(SessionUser.user_id == user_id))
+    return jsonify(session_user.user.to_dict())
 
 
 def session_set_parking_loc(session_id: int, user_id: int):

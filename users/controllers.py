@@ -46,7 +46,8 @@ def user_get_sessions(user_id: int):
     return jsonify(response)
 
 
-# def user_get_session(user_id: int, session_id: int):
-#     session = db.session().scalar(db.select(Session)
-#                                     .where(Session.session_users.any(SessionUser.user_id == user_id and SessionUser.session_id == session_id)))
-#     return jsonify(session.to_dict())
+def user_get_session(user_id: int, session_id: int):
+    session_user = db.session().scalar(db.select(SessionUser)
+                                    .where(SessionUser.user_id == user_id)
+                                    .where(SessionUser.session_id == session_id))
+    return jsonify(session_user.session.to_dict())
