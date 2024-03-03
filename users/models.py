@@ -18,4 +18,7 @@ class User(db.Model):
     session_users: Mapped[List['SessionUser']] = relationship(back_populates='user')
 
     def to_dict(self):
-        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+        return {"id": int(self.id),
+                "email": str(self.email),
+                "first_name": str(self.first_name),
+                "last_name": str(self.last_name)}
