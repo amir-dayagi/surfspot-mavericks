@@ -13,7 +13,6 @@ class Session(db.Model):
 
     name = mapped_column(Text, nullable=False)
     start_datetime = mapped_column(DateTime(True), nullable=False)
-    end_datetime = mapped_column(DateTime(True), nullable=False)
     area = mapped_column(Text, nullable=False)
 
     session_users: Mapped[List['SessionUser']] = relationship(back_populates='session')

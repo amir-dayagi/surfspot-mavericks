@@ -20,18 +20,11 @@ def get_session(id: int):
 
 
 def create_session():
-    def get_area(session_json):
-        return session_json['area']
-    
-    def get_datetime(datetime_str):
-        return datetime.now()
-    
     session_json = request.get_json()
     new_session = Session(
                           name = session_json['name'],
-                          start_datetime = get_datetime(session_json['start_datetime']),
-                          end_datetime = get_datetime(session_json['end_datetime']),
-                          area = get_area(session_json)
+                          start_datetime = datetime.fromisoformat(session_json['start_datetime']),
+                          area = session_json['area'] # just text for now!
                           )
     db.session.add(new_session)
     db.session.commit()
@@ -87,7 +80,7 @@ def session_set_parking_loc(session_id: int, user_id: int):
                                         .where(SessionUser.session_id == session_id)
                                         .where(SessionUser.user_id == user_id)
                                      )
-    session_user.parking_location = location_json['parking_location']
+    session_user.parking_location = location_json['parking_location'] # just text for now!
     db.session.commit()
 
 
@@ -97,5 +90,5 @@ def session_set_surfing_loc(session_id: int, user_id: int):
                                         .where(SessionUser.session_id == session_id)
                                         .where(SessionUser.user_id == user_id)
                                     )
-    session_user.surfing_location = location_json['surfing_location']
+    session_user.surfing_location = location_json['surfing_location'] # just text for now!
     db.session.commit()
