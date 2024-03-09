@@ -1,9 +1,9 @@
-from .. import db
-
 from typing import List
 
 from sqlalchemy import DateTime, inspect, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from .. import db
 
 class Session(db.Model):
     __tablename__ = 'sessions'
@@ -24,5 +24,3 @@ class Session(db.Model):
                 "name": str(self.name),
                 "start_datetime": self.start_datetime.replace(microsecond=0).isoformat(),
                 "area": str(self.area)}
-
-    
