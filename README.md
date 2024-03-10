@@ -28,6 +28,12 @@ Install Poetry ([instructions](https://python-poetry.org/docs/#installing-with-p
 ```
 pipx install poetry
 ```
+
+Ensure version of Poetry is >1.8
+```
+poetry --version
+```
+
 ## Build and Run
 
 To add dependencies:
