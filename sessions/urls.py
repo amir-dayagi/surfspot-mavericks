@@ -10,10 +10,10 @@ from ..common.utils import token_required
 def get_sessions(user):
     return controllers.get_sessions(user)
 
-# @app.route('/sessions/<int:session_id>', methods=['GET'])
-# @token_required
-# def get_session(user, session_id):
-#     return controllers.get_session(user, session_id)
+@app.route('/sessions/<int:session_id>', methods=['GET'])
+@token_required
+def get_session(user, session_id):
+    return controllers.get_session(user, session_id)
 
 
 @app.route('/sessions/', methods=['POST'])
@@ -21,10 +21,10 @@ def get_sessions(user):
 def create_session(user):
     return controllers.create_session(user)
 
-# @app.route('/sessions/<int:session_id>', methods=['DELETE'])
-# @token_required
-# def delete_session(user, session_id):
-#     return controllers.delete_session(user, session_id)
+@app.route('/sessions/<int:session_id>', methods=['DELETE'])
+@token_required
+def delete_session(user, session_id):
+    return controllers.delete_session(user, session_id)
 
 # @app.route('/sessions/<int:session_id>', methods=['PATCH'])
 # @token_required
@@ -32,10 +32,10 @@ def create_session(user):
 #     return controllers.modify_session(user, session_id)
 
 
-# @app.route('/sessions/<int:session_id>/leave', methods=['PATCH'])
-# @token_required
-# def leave_session(user, session_id):
-#     return controllers.leave_session(user, session_id)
+@app.route('/sessions/<int:session_id>/leave', methods=['PATCH'])
+@token_required
+def leave_session(user, session_id):
+    return controllers.leave_session(user, session_id)
 
 # @app.route('/sessions/<int:session_id>/add-user/<int:added_user_id>', methods=['PATCH'])
 # @token_required
