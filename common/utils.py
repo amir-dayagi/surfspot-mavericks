@@ -24,8 +24,21 @@ def token_required(func):
         except:
             return jsonify({'message': 'Invalid token!'}), 401
         
+        if 'id' not in payload:
+            return jsonify({'message': 'Invalid token!'}), 401
+
         user = db.session.scalar(db.select(User).where(User.id == payload['id']))
+
+        if not user:
+            return jsonify({'message': 'Invalid token!'}), 401
         
         return func(user, *args, **kwargs)
     
     return decorated
+
+
+class JsonException(Exception):
+    def __init__(self, message, status):
+        super().__init__(message)
+
+        self.status = status

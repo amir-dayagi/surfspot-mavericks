@@ -16,4 +16,4 @@ class User(db.Model):
     first_name = mapped_column(Text, nullable=False)
     last_name = mapped_column(Text, nullable=True)
 
-    session_users: Mapped[List['SessionUser']] = relationship(back_populates='user')
+    session_users: Mapped[List['SessionUser']] = relationship(back_populates='user', cascade='all, delete-orphan')
