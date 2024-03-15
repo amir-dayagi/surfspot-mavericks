@@ -2,14 +2,15 @@ from typing import List
 
 from sqlalchemy import DateTime, inspect, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
 
 from .. import db
 
 class Session(db.Model):
     __tablename__ = 'sessions'
 
-    id = mapped_column(Integer, nullable=False, primary_key=True, server_default="nextval('sessions_id_seq'::regclass)")
-    create_datetime = mapped_column(DateTime(True), nullable=False, server_default="now()")
+    id = mapped_column(Integer, db.Sequence('sessions_id_seq'), nullable=False, primary_key=True)
+    create_datetime = mapped_column(DateTime(True), nullable=False, server_default=func.now())
 
     name = mapped_column(Text, nullable=False)
     start_datetime = mapped_column(DateTime(True), nullable=False)

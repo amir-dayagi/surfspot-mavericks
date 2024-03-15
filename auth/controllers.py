@@ -4,6 +4,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import db
+from ..app import app
 from .models import User
 from ..sessions.models import Session
 from ..common.models import SessionUser
@@ -23,7 +24,7 @@ def login(login_json):
     token = jwt.encode({
                         'id': user.id,
                         'exp': datetime.now() + timedelta(weeks=1)
-                        }, os.getenv('SECRET_KEY'), "HS256")
+                        }, app.config['SECRET_KEY'], "HS256")
     
     return token
 

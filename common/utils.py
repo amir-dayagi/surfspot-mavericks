@@ -4,6 +4,7 @@ import jwt
 import os
 
 from .. import db
+from ..app import app
 from ..auth.models import User
 
 
@@ -20,7 +21,7 @@ def token_required(func):
         token = auth_split[1]
         payload = None
         try:
-            payload = jwt.decode(token, os.getenv('SECRET_KEY'), algorithms=["HS256"])
+            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'message': 'Invalid token!'}), 401
         

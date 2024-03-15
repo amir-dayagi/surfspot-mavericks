@@ -34,6 +34,62 @@ Ensure version of Poetry is >1.8
 poetry --version
 ```
 
+### PostgreSQL
+
+PostgreSQL is a relational database. We use it to persist our data.
+
+Install PostgreSQL ([instructions](https://www.postgresql.org/download))
+
+```
+brew install postgresql@16
+```
+
+To run PostgreSQL, run the following command:
+
+```
+brew services start postgresql@16
+```
+
+To stop running PostgreSQL, run the following command:
+
+```
+brew services stop postgresql@16
+```
+
+#### Database Setup
+
+After running a PostgreSQL server, we need to create a database.
+
+Create a database ([instructions](https://www.postgresql.org/docs/current/app-createdb.html))
+
+```
+createdb surfspot
+```
+
+Use Migrate to initialize database ([instructions](https://www.postgresql.org/docs/current/app-createdb.html))
+
+**Don't forget to use poetry to run your commands so all required dependencies are installed!**
+
+```
+poetry run flask db init
+```
+
+
+```
+poetry run flask db migrate -m "Initial migration."
+```
+
+
+```
+poetry run flask db upgrade
+```
+
+#### Database Migration
+
+Each time the database models change, repeat the `migrate` and `upgrade` commands.
+
+<!--TODO fill in according to migration-->
+
 ## Build and Run
 
 To add dependencies:
@@ -49,5 +105,5 @@ poetry install
 
 To run:
 ```
-poetry run flask run
+CONFIG_MODE=<DESIRED_CONFIG_MODE> SECRET_KEY=<YOUR_SECRET_KEY>  poetry run flask run 
 ```
