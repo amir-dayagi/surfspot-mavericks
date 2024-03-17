@@ -1,9 +1,9 @@
-from .. import db
-
 from typing import List
 
 from sqlalchemy import ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from .. import db
 
 class SessionUser(db.Model):
     __tablename__ = 'session_users'
@@ -12,7 +12,6 @@ class SessionUser(db.Model):
     session_id = mapped_column(ForeignKey('sessions.id'), primary_key=True)
 
     parking_location = mapped_column(Text, nullable=True)
-    surfing_location = mapped_column(Text, nullable=True)
 
     session: Mapped['Session'] = relationship(back_populates='session_users')
     user: Mapped['User'] = relationship(back_populates='session_users')
