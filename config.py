@@ -3,7 +3,7 @@ import os
 
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = os.getenv("SECRET_KEY", default="Do I really need this?")
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True

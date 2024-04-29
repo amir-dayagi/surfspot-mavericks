@@ -1,6 +1,6 @@
 from typing import List
 
-from sqlalchemy import DateTime, inspect, Integer, Text
+from sqlalchemy import DateTime, Double, inspect, Integer, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -14,8 +14,9 @@ class Session(db.Model):
 
     name = mapped_column(Text, nullable=False)
     start_datetime = mapped_column(DateTime(True), nullable=False)
-    area = mapped_column(Text, nullable=False)
+    spot_id = mapped_column(ForeignKey('spots.id'), nullable=False)
 
+    spot: Mapped['Spot'] = relationship()
     session_users: Mapped[List['SessionUser']] = relationship(back_populates='session', cascade='all, delete-orphan')
 
 
@@ -24,4 +25,4 @@ class Session(db.Model):
                 "create_datetime": self.create_datetime.replace(microsecond=0).isoformat(),
                 "name": str(self.name),
                 "start_datetime": self.start_datetime.replace(microsecond=0).isoformat(),
-                "area": str(self.area)}
+                "spot": self.spot.to_dict()}
