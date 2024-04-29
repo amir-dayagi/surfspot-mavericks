@@ -28,7 +28,7 @@ def get_session(user, session_id):
         session = controllers.get_session(user, session_id)
         return jsonify(session.to_dict()), 200
     except JsonException as e:
-        return jsonify({'message': e.message}), e.status
+        return jsonify({'message': str(e)}), e.status
 
 
 
@@ -38,7 +38,7 @@ def create_session(user):
     '''
     HTTP Body: {name: <session name>,
                 start_datetime: <session start time>,
-                area: <session area>}
+                spot_id: <spot_id>}
     
     Creates a new session and adds user to the session
     '''
@@ -46,7 +46,7 @@ def create_session(user):
         controllers.create_session(user, request.get_json())
         return jsonify({'message': 'Successfully created session!'}), 201
     except JsonException as e:
-        return jsonify({'message': e.message}), e.status
+        return jsonify({'message': str(e)}), e.status
 
 @app.route('/sessions/<int:session_id>', methods=['DELETE'])
 @token_required
@@ -58,7 +58,7 @@ def delete_session(user, session_id):
         controllers.delete_session(user, session_id)
         return jsonify({'message': 'Session deleted!'}), 200
     except JsonException as e:
-        return jsonify({'message': e.message}), e.status
+        return jsonify({'message': str(e)}), e.status
 
 # @app.route('/sessions/<int:session_id>', methods=['PATCH'])
 # @token_required
@@ -76,7 +76,7 @@ def leave_session(user, session_id):
         controllers.leave_session(user, session_id)
         return jsonify({'message': 'User left session!'}), 200
     except JsonException as e:
-        return jsonify({'message': e.message}), e.status
+        return jsonify({'message': str(e)}), e.status
 
 # @app.route('/sessions/<int:session_id>/add-user/<int:added_user_id>', methods=['PATCH'])
 # @token_required

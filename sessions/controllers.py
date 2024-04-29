@@ -18,13 +18,13 @@ def get_session(user, session_id):
     raise JsonException('Session not found!', 404)
 
 def create_session(user, session_json):
-    if not all(key in session_json for key in ('name', 'start_datetime', 'area')):
+    if not all(key in session_json for key in ('name', 'start_datetime', 'spot_id')):
         raise JsonException('Missing required fields!', 400)
 
     new_session = Session(
                           name = session_json['name'],
                           start_datetime = datetime.fromisoformat(session_json['start_datetime']),
-                          area = session_json['area'] # just text for now!
+                          spot_id = session_json['spot_id']
                           )
     db.session.add(new_session)
     db.session.commit()

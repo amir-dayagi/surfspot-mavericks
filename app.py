@@ -10,6 +10,9 @@ from .auth import urls
 # Sessions Routes
 from .sessions import urls
 
+# Spots Routes
+from .spots import urls
+
 if __name__ == '__main__':
     app.run()
     

@@ -16,7 +16,7 @@ def login():
         token = controllers.login(request.get_json())
         return jsonify({'token': token}), 200
     except JsonException as e:
-        return jsonify({'message': e.message}), e.status
+        return jsonify({'message': str(e)}), e.status
 
 
 @app.route('/signup', methods=['POST'])
@@ -33,7 +33,7 @@ def signup():
         controllers.signup(request.get_json())
         return jsonify({'message': 'Account created successfully!'}), 201
     except JsonException as e:
-        return jsonify({'message': e.message}), e.status
+        return jsonify({'message': str(e)}), e.status
 
     
 

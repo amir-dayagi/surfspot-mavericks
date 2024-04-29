@@ -174,3 +174,6 @@ pyrightconfig.json
 
 # PyCharm
 .idea/
+
+# Database Migration
+migrations/
