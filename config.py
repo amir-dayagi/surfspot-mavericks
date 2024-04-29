@@ -9,6 +9,7 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres@localhost:5432/surfspot'
+    SECRET_KEY = os.getenv("SECRET_KEY", default="Do I really need this?")
 
 class TestingConfig(Config):
     TESTING = True

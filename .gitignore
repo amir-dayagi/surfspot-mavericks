@@ -177,3 +177,5 @@ pyrightconfig.json
 
 # Database Migration
 migrations/
+=======
+.idea/
