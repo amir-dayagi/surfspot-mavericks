@@ -5,9 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import db
 from ..app import app
-from .models import User
 from ..sessions.models import Session
-from ..common.models import SessionUser
+from ..common.models import User, SessionUser
 from ..common.utils import JsonException
 
 def login(login_json):

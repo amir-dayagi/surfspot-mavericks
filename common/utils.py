@@ -5,7 +5,7 @@ import os
 
 from .. import db
 from ..app import app
-from ..auth.models import User
+from ..common.models import User
 
 
 def token_required(func):

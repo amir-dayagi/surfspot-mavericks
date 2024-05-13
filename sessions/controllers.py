@@ -2,7 +2,7 @@ from datetime import datetime
 
 from .. import db
 from .models import Session
-from ..auth.models import User
+from ..common.models import User
 from ..common.models import SessionUser
 from ..common.utils import JsonException
 
@@ -37,6 +37,9 @@ def create_session(user, session_json):
     db.session.add(new_session_user)
     db.session.commit()
 
+    db.session.refresh(new_session)
+    return new_session
+
 def delete_session(user, session_id):
     for session_user in user.session_users:
         if session_user.session_id == session_id:
@@ -59,8 +62,20 @@ def leave_session(user, session_id):
 
     raise JsonException('Session not found!', 404)
 
-def add_user_to_session(user, session_id, adding_user_id):
-    pass
+def add_user_to_session(user, session_id, added_user_id):
+    added_user = db.session.scalar(db.select(User).where(User.id == added_user_id))
+    if not added_user_id:
+        raise JsonException('User that you are trying to add does not exist!', 404)
+
+    if session_id not in [session_user.session_id for session_user in user.session_users]:
+        raise JsonException('User is not in given session!', 404)
+    
+    new_session_user = SessionUser(
+                                   session_id=session_id,
+                                   user_id=added_user_id
+                                   )
+    db.session.add(new_session_user)
+    db.session.commit()
 
 def session_set_parking_loc(user, session_id):
     pass
