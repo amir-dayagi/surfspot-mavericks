@@ -63,19 +63,29 @@ def leave_session(user, session_id):
     raise JsonException('Session not found!', 404)
 
 def add_user_to_session(user, session_id, added_user_id):
-    added_user = db.session.scalar(db.select(User).where(User.id == added_user_id))
-    if not added_user_id:
-        raise JsonException('User that you are trying to add does not exist!', 404)
-
     if session_id not in [session_user.session_id for session_user in user.session_users]:
         raise JsonException('User is not in given session!', 404)
     
+    added_user = db.session.scalar(db.select(User).where(User.id == added_user_id))
+    if not added_user_id:
+        raise JsonException('User that you are trying to add does not exist!', 404)
+    
+    if session_id in [session_user.session_id for session_user in added_user.session_users]:
+        raise JsonException('User that you are trying to add is already in the given session', 404)
+
     new_session_user = SessionUser(
                                    session_id=session_id,
                                    user_id=added_user_id
                                    )
     db.session.add(new_session_user)
     db.session.commit()
+
+def get_session_users(user, session_id):
+    for session_user in user.session_users:
+        if session_user.session_id == session_id:
+            return [su.user for su in session_user.session.session_users if su.user_id != user.id]
+
+    raise JsonException('Session not found!', 404)
 
 def session_set_parking_loc(user, session_id):
     pass
