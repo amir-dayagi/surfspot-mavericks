@@ -10,11 +10,11 @@ def login():
     HTTP Body: {email: <user email>,
                 password: <user password>}
     
-    Validates that user with email and password exist and returns a token.
+    Validates that user with email and password exist and returns a token and its expiration date.
     '''
     try:
-        token = controllers.login(request.get_json())
-        return jsonify({'token': token}), 200
+        token, exp = controllers.login(request.get_json())
+        return jsonify({'token': token, 'exp': exp.replace(microsecond=0).isoformat()}), 200
     except JsonException as e:
         return jsonify({'message': str(e)}), e.status
 

@@ -20,12 +20,13 @@ def login(login_json):
     if not check_password_hash(user.password, login_json['password']):
         raise JsonException('Wrong password!', 403)
     
+    exp = datetime.now() + timedelta(weeks=1)
     token = jwt.encode({
                         'id': user.id,
-                        'exp': datetime.now() + timedelta(weeks=1)
+                        'exp': exp
                         }, app.config['SECRET_KEY'], "HS256")
     
-    return token
+    return token, exp
 
 
 def signup(signup_json):
