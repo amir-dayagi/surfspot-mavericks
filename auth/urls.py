@@ -7,10 +7,10 @@ from ..common.utils import JsonException
 @app.route('/login', methods=['POST'])
 def login():
     '''
-    HTTP Body: {email: <user email>,
-                password: <user password>}
+    HTTP Body: {username: <username>,
+                password: <password>}
     
-    Validates that user with email and password exist and returns a token and its expiration date.
+    Validates that user with username and password exist and returns a token and its expiration date.
     '''
     try:
         token, exp = controllers.login(request.get_json())
@@ -23,12 +23,10 @@ def login():
 @app.route('/signup', methods=['POST'])
 def signup():
     '''
-    HTTP Body: {email: <user email>,
-                password: <user password>,
-                first_name: <user first name>
-                last_name: <optional! user last_name>}
+    HTTP Body: {username: <username>,
+                password: <password>}
 
-    Creates a new account if user with email doesn't already exist
+    Creates a new account if user with username doesn't already exist
     '''
     try:
         controllers.signup(request.get_json())
