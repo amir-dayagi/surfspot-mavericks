@@ -66,11 +66,14 @@ class Message(db.Model):
     context = mapped_column(Text, nullable=False)
     send_datetime = mapped_column(DateTime(True), nullable=False, server_default=func.now())
 
-    def to_dict(self):
+    user: Mapped['User'] = relationship()
+
+    def to_dict(self, requested_user_id):
         return {
                 'id': int(self.id),
-                'user_id': int(self.user_id),
+                'user': self.user.to_dict(),
                 'group_id': int(self.group_id),
                 'context': str(self.context),
-                'send_datetime': self.send_datetime.replace(microsecond=0).isoformat()
+                'send_datetime': self.send_datetime.replace(microsecond=0).isoformat(),
+                'is_current_user': requested_user_id == self.user_id
                }

@@ -165,7 +165,7 @@ def get_session_users(user, group_id):
     return db.session.scalars(db.select(User)
                                 .where(User.id.in_(session_users))).all()
 
-def get_latest_messages(user, group_id, limit):
+def get_messages(user, group_id, cursor, limit, ascending):
     # assert that user is in group
     group = None
     for group_ in user.groups:
@@ -175,9 +175,34 @@ def get_latest_messages(user, group_id, limit):
     if not group:
         raise JsonException('User is not in given group!', 400)
 
-    return db.session.scalars(db.select(Message)
-                                .where(Message.group_id == group_id)
-                                .order_by(Message.send_datetime.desc())).all()[:limit]
+    if ascending:
+        return db.session.scalars(
+                                  db.select(Message)
+                                    .where((Message.group_id == group_id) & ((Message.id >= cursor) if cursor != None else True))
+                                    .order_by(Message.id)
+                                    .fetch(limit)
+                                 ).all()
+    else:
+        return db.session.scalars(
+                                  db.select(Message)
+                                    .where((Message.group_id == group_id) & ((Message.id <= cursor) if cursor != None else True))
+                                    .order_by(Message.id.desc())
+                                    .fetch(limit)
+                                 ).all()[::-1]
+
+# def get_latest_messages(user, group_id, limit):
+#     # assert that user is in group
+#     group = None
+#     for group_ in user.groups:
+#         if group_.id == group_id:
+#             group = group_
+#             break
+#     if not group:
+#         raise JsonException('User is not in given group!', 400)
+
+#     return db.session.scalars(db.select(Message)
+#                                 .where(Message.group_id == group_id)
+#                                 .order_by(Message.send_datetime.desc())).fetch(limit).all()[::-1]
 
 
 def send_message(user, group_id, message_request):

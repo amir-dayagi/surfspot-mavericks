@@ -119,20 +119,39 @@ def get_session_users(user, group_id) -> '[User]':
 
 @app.route('/groups/<int:group_id>/messages', methods=['GET'])
 @token_required
-def get_latest_messages(user, group_id) -> '[Message]':
-    '''
-    Returns latest messages of group up to given limit
-    '''
-    limit = int(request.args.get('limit', default=10))
+def get_messages(user, group_id) -> 'next_cursors + [Message]':
+    cursor = request.args.get('cursor', default=None, type=int)
+    limit = request.args.get('limit', default=20, type=int)
+    ascending = request.args.get('ascending', default=True, type=lambda x: x.lower()=='true')
     try:
-        messages = controllers.get_latest_messages(user, group_id, limit)
+        messages = controllers.get_messages(user, group_id, cursor, limit, ascending)
     except JsonException as e:
         return jsonify({'message': str(e)}), e.status
     
-    response = []
-    for message in messages:
-        response.append(message.to_dict())
+    print(cursor, limit, ascending)
+    response = {
+        'ascending_next_cursor': messages[-1].id+1 if messages else 0,
+        'descending_next_cursor': messages[0].id-1 if messages else 0,
+        'messages': [message.to_dict(user.id) for message in messages]
+    }
     return jsonify(response), 200
+
+# @app.route('/groups/<int:group_id>/latest-messages', methods=['GET'])
+# @token_required
+# def get_latest_messages(user, group_id) -> '[Message]':
+#     '''
+#     Returns latest messages of group up to given limit
+#     '''
+#     limit = int(request.args.get('limit', default=20))
+#     try:
+#         messages = controllers.get_latest_messages(user, group_id, limit)
+#     except JsonException as e:
+#         return jsonify({'message': str(e)}), e.status
+    
+#     response = []
+#     for message in messages:
+#         response.append(message.to_dict(user.id))
+#     return jsonify(response), 200
 
 @app.route('/groups/<int:group_id>/messages', methods=['POST'])
 @token_required
@@ -144,6 +163,6 @@ def send_message(user, group_id) -> 'Message':
     '''
     try:
         message = controllers.send_message(user, group_id, request.get_json())
-        return jsonify(message.to_dict()), 201
+        return jsonify(message.to_dict(user.id)), 201
     except JsonException as e:
         return jsonify({'message': str(e)}), e.status

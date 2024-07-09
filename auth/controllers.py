@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import jwt
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,7 +19,7 @@ def login(login_request) -> '(token, exp)':
     if not check_password_hash(user.password, login_request['password']):
         raise JsonException('Wrong password!', 403)
     
-    exp = datetime.now() + timedelta(weeks=1)
+    exp = datetime.now(timezone.utc) + timedelta(weeks=1)
     token = jwt.encode({
                         'id': user.id,
                         'exp': exp
